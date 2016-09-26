@@ -1,0 +1,1 @@
+INSERT INTO user(id, name, user_name, password) VALUES('814569a4-a233-4708-a2ca-91157aaa9519', 'Emerson Luiz', 'ecastro', '98f6bcd4621d373cade4e832627b4f6'); 

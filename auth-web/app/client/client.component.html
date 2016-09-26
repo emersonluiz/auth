@@ -1,0 +1,19 @@
+<div class="container-fluid">
+    <form class="form-horizontal">
+        <div class="form-group">
+            <div class="col-sm-8">
+                <button id ="set" type="button" class="btn btn-primary" (click)="set()">SET</button>
+                <button id ="get" type="button" class="btn btn-primary" [disabled]="example.id == ''" (click)="get()">GET</button>
+                <button id ="logout" type="button" class="btn btn-danger" (click)="logout()">LOGOUT</button>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-8">
+                <blockquote>
+                    Id: {{example.id}} <br />
+                    Description: {{example.description}}
+                </blockquote>
+            </div>
+        </div>
+    </form>
+</div>

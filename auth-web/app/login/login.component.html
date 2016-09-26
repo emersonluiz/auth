@@ -1,0 +1,21 @@
+<div class="container-fluid">
+    <form class="form-horizontal">
+        <div class="form-group">
+            <label for="username" class="col-sm-3 control-label">User Name</label>
+            <div class="col-sm-5">
+                <input type="text" class="form-control" id="username" placeholder="user name" name="username" type="text" [(ngModel)]="username" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="password" class="col-sm-3 control-label">Password</label>
+            <div class="col-sm-5">
+                <input type="password" class="form-control" placeholder="password" id="password" name="password" [(ngModel)]="password" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-8">
+                <button id ="login" type="button" class="btn btn-primary pull-right" (click)="login()" [disabled]="validation()">Login</button>
+            </div>
+        </div>
+    </form>
+</div>

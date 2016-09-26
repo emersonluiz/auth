@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:security="http://www.springframework.org/schema/security"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
+
+	<!-- Set pre-authenticated processing filter and authentication entry point -->
+    <security:http 
+        auto-config="false" 
+        use-expressions="true" 
+        create-session="stateless" 
+        entry-point-ref="authenticationEntryPoint">
+        <security:custom-filter ref="preAuthenticatedProcessingFilter" position="PRE_AUTH_FILTER"/>
+    </security:http>
+
+    <!-- Enables method security with expression-based access control -->
+    <security:global-method-security pre-post-annotations="enabled">
+        <!-- Reference to a custom expression handler with ACL support -->
+    </security:global-method-security>
+
+    <!-- Configure pre-authenticated authentication manager -->
+    <security:authentication-manager alias="authenticationManager">
+        <security:authentication-provider ref='authenticationProvider'/>
+    </security:authentication-manager>
+
+    <!-- Configure pre-authenticated authentication provider -->
+    <bean id="authenticationProvider" class="org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationProvider">
+        <property name="preAuthenticatedUserDetailsService" ref="preAuthenticatedUserDetailsService"/>
+    </bean>
+
+    <!-- Configure pre-authenticate user details service, getting the user details for the bearer token (session id) -->
+    <bean id="preAuthenticatedUserDetailsService" class="br.com.emersonluiz.auth.security.SessionStoreUserDetailsService">
+        <constructor-arg ref="authenticationSessionRepository" />
+    </bean>
+
+    <bean id="authenticationSessionRepository" class="br.com.emersonluiz.auth.security.RedisAuthenticationSessionRepository" />
+
+    <!-- Jedis ConnectionFactory -->
+    <bean id="jedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory" p:host-name="${redis.host}" p:port="${redis.port}" p:use-pool="true"/>
+
+    <!-- redis template definition -->
+    <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate" p:connection-factory-ref="jedisConnectionFactory"/>
+
+    <!-- Configure pre-authenticated processing filter, reading bearer token (session id) from the request -->
+    <bean id="preAuthenticatedProcessingFilter" class="br.com.emersonluiz.auth.security.PreAuthenticatedBearerTokenProcessingFilter">
+        <property name="authenticationManager" ref="authenticationManager"/>
+    </bean>
+
+    <!-- Configure the auhentication entry point -->
+    <bean id="authenticationEntryPoint" class="org.springframework.security.web.authentication.Http403ForbiddenEntryPoint"/>
+</beans>

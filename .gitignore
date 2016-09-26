@@ -1,0 +1,15 @@
+.classpath
+.project
+.settings
+target
+.metadata
+
+/auth-rest-api/log
+
+/auth-web/node_modules
+/auth-web/typings
+
+auth-web/app/*.js
+auth-web/app/*/*.js
+auth-web/app/*.map
+auth-web/app/*/*.map
